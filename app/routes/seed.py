@@ -1,5 +1,14 @@
 from flask import Blueprint
-from app.models import User, HealthData, Contact, Devices, SexType, db
+from app.models import (
+    User,
+    HealthData,
+    Contact,
+    Devices,
+    Notification,
+    SexType,
+    NotificationType,
+    db,
+)
 
 seed_bp = Blueprint("seed_bp", __name__)
 
@@ -10,6 +19,7 @@ def add_dummy_data():
     add_dummy_health_data()
     add_dummy_contacts()
     add_dummy_devices()
+    add_dummy_notifications()
     return "Dummy data added successfully"
 
 
@@ -44,14 +54,14 @@ def add_dummy_health_data():
         user_id=1,  # Assuming user1 has ID 1
         troponin_level=10,
         heart_rate=70,
-        blood_pressure=120,
+        blood_pressure="120/80",
     )
 
     health_data2 = HealthData(
         user_id=2,  # Assuming user2 has ID 2
         troponin_level=15,
         heart_rate=65,
-        blood_pressure=130,
+        blood_pressure="130/85",
     )
 
     db.session.add(health_data1)
@@ -98,4 +108,26 @@ def add_dummy_devices():
 
     db.session.add(device1)
     db.session.add(device2)
+    db.session.commit()
+
+
+def add_dummy_notifications():
+    notification1 = Notification(
+        user_id=1,  # Assuming user1 has ID 1
+        title="Good News!",
+        message="Your recent health checkup results look great!",
+        type=NotificationType.GOOD,
+        isRead=False,
+    )
+
+    notification2 = Notification(
+        user_id=2,  # Assuming user2 has ID 2
+        title="Risk Alert",
+        message="Please consult your doctor regarding your blood pressure.",
+        type=NotificationType.RISK,
+        isRead=False,
+    )
+
+    db.session.add(notification1)
+    db.session.add(notification2)
     db.session.commit()

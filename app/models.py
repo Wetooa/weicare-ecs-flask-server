@@ -78,3 +78,27 @@ class HealthData(db.Model):
 
     def __init__(self, **kwargs):
         super(HealthData, self).__init__(**kwargs)
+
+
+class NotificationType(enum.Enum):
+    GOOD = "good"
+    RISK = "risk"
+    DANGER = "danger"
+
+
+@dataclass
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("notification", lazy=True))
+
+    title = db.Column(db.String)
+    message = db.Column(db.String)
+    type = db.Column(db.Enum(NotificationType))
+    isRead = db.Column(db.Boolean)
+
+    created_at = db.Column(db.DateTime, default=datetime.now())
+
+    def __init__(self, **kwargs):
+        super(Notification, self).__init__(**kwargs)

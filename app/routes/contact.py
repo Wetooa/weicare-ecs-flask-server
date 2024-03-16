@@ -26,7 +26,7 @@ def get_user_contacts(user_id):
     return jsonify(contacts_list)
 
 
-@contact_bp.route("/contacts/<int:user_id>", methods=["POST"])
+@contact_bp.route("/contact/<int:user_id>", methods=["POST"])
 def add_contact(user_id):
     user = User.query.get_or_404(user_id)
     [firstname, lastname, age, address, number] = request.args.lists()
