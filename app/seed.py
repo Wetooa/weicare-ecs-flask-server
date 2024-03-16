@@ -9,7 +9,7 @@ dummy_data_bp = Blueprint("dummy_data", __name__)
 @dummy_data_bp.route("/add_dummy_data", methods=["GET"])
 def add_dummy_data():
     add_dummy_users()
-    # add_dummy_health_data()
+    add_dummy_health_data()
     return "Dummy data added successfully"
 
 

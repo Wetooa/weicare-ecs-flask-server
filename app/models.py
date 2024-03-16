@@ -1,6 +1,7 @@
 from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
+from dataclasses import dataclass
 import enum
 
 
@@ -9,6 +10,7 @@ class SexType(enum.Enum):
     FEMALE = "female"
 
 
+@dataclass
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -21,15 +23,13 @@ class User(db.Model):
     weight = db.Column(db.Float)
     height = db.Column(db.Float)
 
-    contact_id = db.Column(db.Integer, db.ForeignKey("contact.id"))
-    contact = db.relationship("Contact", backref=db.backref("user", lazy=True))
-
     created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
 
+@dataclass
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -39,10 +39,14 @@ class Contact(db.Model):
     address = db.Column(db.String)
     number = db.Column(db.Integer)
 
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("contact", lazy=True))
+
     def __init__(self, **kwargs):
         super(Contact, self).__init__(**kwargs)
 
 
+@dataclass
 class HealthData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
