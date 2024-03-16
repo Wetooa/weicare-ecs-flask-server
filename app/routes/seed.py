@@ -120,10 +120,17 @@ def add_dummy_notifications():
     )
 
     notification2 = Notification(
-        user_id=2,  # Assuming user2 has ID 2
+        user_id=1,  # Assuming user2 has ID 2
         title="Risk Alert",
         message="Please consult your doctor regarding your blood pressure.",
         type=NotificationType.RISK,
+    )
+
+    notification2 = Notification(
+        user_id=3,  # Assuming user2 has ID 2
+        title="Danger Danger Zone",
+        message="U are in danger my guy!!! Call the ambulance",
+        type=NotificationType.DANGER,
     )
 
     db.session.add(notification1)
