@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from flask_cors import CORS
 import os
 
 
@@ -32,6 +33,8 @@ def create_app():
     app.register_blueprint(device_bp)
     app.register_blueprint(notification_bp)
     app.register_blueprint(seed_bp)
+
+    CORS(app)
 
     with app.app_context():
         db.create_all()
