@@ -55,6 +55,7 @@ def add_dummy_health_data():
         troponin_level=10,
         heart_rate=70,
         blood_pressure="120/80",
+        heart_status="good",
     )
 
     health_data2 = HealthData(
@@ -62,6 +63,7 @@ def add_dummy_health_data():
         troponin_level=15,
         heart_rate=65,
         blood_pressure="130/85",
+        heart_status="bad",
     )
 
     db.session.add(health_data1)

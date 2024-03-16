@@ -73,6 +73,7 @@ class HealthData(db.Model):
     troponin_level = db.Column(db.Integer)
     heart_rate = db.Column(db.Integer)
     blood_pressure = db.Column(db.String)
+    heart_status = db.Column(db.String)
 
     created_at = db.Column(db.DateTime, default=datetime.now())
 

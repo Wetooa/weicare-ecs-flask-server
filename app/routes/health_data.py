@@ -18,6 +18,7 @@ def get_user_health_data(user_id):
             "troponin_level": h.troponin_level,
             "heart_rate": h.heart_rate,
             "blood_pressure": h.blood_pressure,
+            "heart_status": h.heart_status,
             "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
         }
         health_data_list.append(health_data)
@@ -35,12 +36,14 @@ def add_user_health_data(user_id):
     troponin_level = randint(0, 20)
     heart_rate = randint(60, 100)
     blood_pressure = f"{randint(100, 130)}/{randint(60,100)}"
+    heart_status = "good" if troponin_level < 15 else "bad"
 
     new_health_data = HealthData(
         user_id=user.id,
         troponin_level=troponin_level,
         heart_rate=heart_rate,
         blood_pressure=blood_pressure,
+        heart_status=heart_status,
     )
 
     # do something here like maybe make model anaylze currently added data alongside previous data
