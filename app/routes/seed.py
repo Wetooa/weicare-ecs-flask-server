@@ -126,8 +126,8 @@ def add_dummy_notifications():
         type=NotificationType.RISK,
     )
 
-    notification2 = Notification(
-        user_id=3,  # Assuming user2 has ID 2
+    notification3 = Notification(
+        user_id=1,  # Assuming user2 has ID 2
         title="Danger Danger Zone",
         message="U are in danger my guy!!! Call the ambulance",
         type=NotificationType.DANGER,
@@ -135,4 +135,5 @@ def add_dummy_notifications():
 
     db.session.add(notification1)
     db.session.add(notification2)
+    db.session.add(notification3)
     db.session.commit()
