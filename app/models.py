@@ -1,4 +1,3 @@
-from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
 from dataclasses import dataclass
@@ -40,10 +39,28 @@ class Contact(db.Model):
     number = db.Column(db.Integer)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    user = db.relationship("User", backref=db.backref("contact", lazy=True))
+    user = db.relationship("User", backref=db.backref("contacts", lazy=True))
+
+    created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, **kwargs):
         super(Contact, self).__init__(**kwargs)
+
+
+@dataclass
+class Devices(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String)
+    is_active = db.Column(db.Boolean)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("devices", lazy=True))
+
+    created_at = db.Column(db.DateTime, default=datetime.now())
+
+    def __init__(self, **kwargs):
+        super(Devices, self).__init__(**kwargs)
 
 
 @dataclass
@@ -55,7 +72,7 @@ class HealthData(db.Model):
 
     troponin_level = db.Column(db.Integer)
     heart_rate = db.Column(db.Integer)
-    blood_pressure = db.Column(db.Integer)
+    blood_pressure = db.Column(db.String)
 
     created_at = db.Column(db.DateTime, default=datetime.now())
 

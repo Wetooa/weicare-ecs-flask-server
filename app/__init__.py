@@ -18,11 +18,17 @@ def create_app():
 
     db.init_app(app)
 
-    from app.routes import main_bp
-    from app.seed import dummy_data_bp
+    from app.routes.user import user_bp
+    from app.routes.contact import contact_bp
+    from app.routes.health_data import health_data_bp
+    from app.routes.devices import devices_bp
+    from app.routes.seed import seed_bp
 
-    app.register_blueprint(main_bp)
-    app.register_blueprint(dummy_data_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(contact_bp)
+    app.register_blueprint(health_data_bp)
+    app.register_blueprint(devices_bp)
+    app.register_blueprint(seed_bp)
 
     with app.app_context():
         db.create_all()
