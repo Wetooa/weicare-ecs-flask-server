@@ -5,7 +5,7 @@ from app.models import User, Contact, HealthData
 devices_bp = Blueprint("devices", __name__)
 
 
-@devices_bp.route("/devices/<int:user_id>", methods=["GET"])
+@devices_bp.route("/device/<int:user_id>", methods=["GET"])
 def get_user_devices(user_id):
     user = User.query.get_or_404(user_id)
     devices_list = []
