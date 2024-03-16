@@ -3,17 +3,17 @@ from app.models import (
     User,
     HealthData,
     Contact,
-    Devices,
+    Device,
     Notification,
     SexType,
     NotificationType,
     db,
 )
 
-seed_bp = Blueprint("seed_bp", __name__)
+seed_bp = Blueprint("seed", __name__)
 
 
-@seed_bp.route("/add_dummy_data", methods=["GET"])
+@seed_bp.route("/add_dummy_data", methods=["POST"])
 def add_dummy_data():
     add_dummy_users()
     add_dummy_health_data()
@@ -75,7 +75,7 @@ def add_dummy_contacts():
         lastname="Johnson",
         age=28,
         address="789 Oak St",
-        number=987654321,
+        number="987654321",
         user_id=1,  # Assuming user1 has ID 1
     )
 
@@ -84,7 +84,7 @@ def add_dummy_contacts():
         lastname="Williams",
         age=35,
         address="321 Pine St",
-        number=123456789,
+        number="123456789",
         user_id=2,  # Assuming user2 has ID 2
     )
 
@@ -94,13 +94,13 @@ def add_dummy_contacts():
 
 
 def add_dummy_devices():
-    device1 = Devices(
+    device1 = Device(
         name="Smartwatch",
         is_active=True,
         user_id=1,  # Assuming user1 has ID 1
     )
 
-    device2 = Devices(
+    device2 = Device(
         name="Fitness Tracker",
         is_active=False,
         user_id=2,  # Assuming user2 has ID 2
@@ -117,7 +117,6 @@ def add_dummy_notifications():
         title="Good News!",
         message="Your recent health checkup results look great!",
         type=NotificationType.GOOD,
-        isRead=False,
     )
 
     notification2 = Notification(
@@ -125,7 +124,6 @@ def add_dummy_notifications():
         title="Risk Alert",
         message="Please consult your doctor regarding your blood pressure.",
         type=NotificationType.RISK,
-        isRead=False,
     )
 
     db.session.add(notification1)

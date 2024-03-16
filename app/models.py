@@ -36,7 +36,7 @@ class Contact(db.Model):
     lastname = db.Column(db.String)
     age = db.Column(db.Integer)
     address = db.Column(db.String)
-    number = db.Column(db.Integer)
+    number = db.Column(db.String)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     user = db.relationship("User", backref=db.backref("contacts", lazy=True))
@@ -48,7 +48,7 @@ class Contact(db.Model):
 
 
 @dataclass
-class Devices(db.Model):
+class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String)
@@ -60,7 +60,7 @@ class Devices(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, **kwargs):
-        super(Devices, self).__init__(**kwargs)
+        super(Device, self).__init__(**kwargs)
 
 
 @dataclass
@@ -91,12 +91,12 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    user = db.relationship("User", backref=db.backref("notification", lazy=True))
+    user = db.relationship("User", backref=db.backref("notifications", lazy=True))
 
     title = db.Column(db.String)
     message = db.Column(db.String)
     type = db.Column(db.Enum(NotificationType))
-    isRead = db.Column(db.Boolean)
+    is_read = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.DateTime, default=datetime.now())
 

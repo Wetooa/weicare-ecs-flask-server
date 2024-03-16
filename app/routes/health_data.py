@@ -26,17 +26,15 @@ def get_user_health_data(user_id):
 
 
 # fake pa muna, simply creates dummy data
-
-
 @health_data_bp.route("/health_data/<int:user_id>", methods=["POST"])
 def add_user_health_data(user_id):
     user = User.query.get_or_404(user_id)
 
-    [troponin_level, heart_rate, blood_pressure] = request.args.lists()
+    # [troponin_level, heart_rate, blood_pressure] = request.get_json()
 
     troponin_level = randint(0, 20)
     heart_rate = randint(60, 100)
-    blood_pressure = str(randint(100, 140) + randint(70, 90))
+    blood_pressure = f"{randint(100, 130)}/{randint(60,100)}"
 
     new_health_data = HealthData(
         user_id=user.id,

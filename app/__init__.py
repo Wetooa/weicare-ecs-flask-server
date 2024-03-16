@@ -21,13 +21,16 @@ def create_app():
     from app.routes.user import user_bp
     from app.routes.contact import contact_bp
     from app.routes.health_data import health_data_bp
-    from app.routes.devices import devices_bp
+    from app.routes.device import device_bp
+    from app.routes.notification import notification_bp
+
     from app.routes.seed import seed_bp
 
     app.register_blueprint(user_bp)
     app.register_blueprint(contact_bp)
     app.register_blueprint(health_data_bp)
-    app.register_blueprint(devices_bp)
+    app.register_blueprint(device_bp)
+    app.register_blueprint(notification_bp)
     app.register_blueprint(seed_bp)
 
     with app.app_context():

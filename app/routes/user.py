@@ -1,6 +1,6 @@
-from flask import jsonify, request
+from flask import jsonify
 from flask import Blueprint
-from app.models import User, Contact, HealthData
+from app.models import User
 
 user_bp = Blueprint("user", __name__)
 
