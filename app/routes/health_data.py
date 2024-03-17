@@ -31,10 +31,22 @@ def get_user_health_data(user_id):
 def add_user_health_data(user_id):
     user = User.query.get_or_404(user_id)
 
-    troponin_level = randint(0, 20)
+    troponin_level = randint(0, 30)
     heart_rate = randint(60, 100)
-    blood_pressure = f"{randint(100, 130)}/{randint(60,100)}"
-    heart_status = "good" if troponin_level < 15 else "bad"
+
+    systolic = randint(100, 140)
+    diastolic = randint(60, 100)
+    blood_pressure = f"{systolic}/{diastolic}"
+
+    heart_status = "healthy"
+
+    if troponin_level > 18:
+        heart_status = "myocardial_infarction"
+    elif systolic > 120 and diastolic < 80:
+        heart_status = "elevated_bp"
+    elif heart_rate > 90:
+        # TODO: change into smth that makes more sense
+        heart_status = "arrhythmia"
 
     # TODO: do something here like maybe make model anaylze currently added data alongside previous data
     # TODO: contact people if heart status is bad
