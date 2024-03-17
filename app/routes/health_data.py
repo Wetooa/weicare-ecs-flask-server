@@ -19,6 +19,7 @@ def get_user_health_data(user_id):
             "heart_rate": h.heart_rate,
             "blood_pressure": h.blood_pressure,
             "heart_status": h.heart_status,
+            "classification": h.classification,
             "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
         }
         health_data_list.append(health_data)
@@ -65,6 +66,16 @@ def add_user_health_data(user_id):
         classification=classification,
     )
 
+    serializable_data = {
+        "user_id": user.id,
+        "troponin_level": new_health_data.troponin_level,
+        "heart_rate": new_health_data.heart_rate,
+        "blood_pressure": new_health_data.blood_pressure,
+        "heart_status": new_health_data.heart_status,
+        "classification": new_health_data.classification,
+        "created_at": new_health_data.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
     db.session.add(new_health_data)
     db.session.commit()
 
@@ -72,7 +83,7 @@ def add_user_health_data(user_id):
         jsonify(
             {
                 "message": "Health data added successfully",
-                "health_data": new_health_data,
+                "health_data": serializable_data,
             }
         ),
         201,
