@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import NotificationType, User, Notification, db
+from app.models import HeartClassificationType, User, Notification, db
 
 notification_bp = Blueprint("notification", __name__)
 
@@ -36,7 +36,7 @@ def create_notification(user_id):
         user_id=user.id,
         title=r.get("title"),
         message=r.get("message"),
-        type=NotificationType(r.get("type")),
+        type=HeartClassificationType(r.get("type")),
     )
 
     db.session.add(new_notification)

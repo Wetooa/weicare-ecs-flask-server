@@ -1,12 +1,11 @@
 from flask import Blueprint
 from app.models import (
     User,
-    HealthData,
     Contact,
     Device,
     Notification,
     SexType,
-    NotificationType,
+    HeartClassificationType,
     db,
 )
 
@@ -16,7 +15,6 @@ seed_bp = Blueprint("seed", __name__)
 @seed_bp.route("/add_dummy_data", methods=["POST"])
 def add_dummy_data():
     add_dummy_users()
-    add_dummy_health_data()
     add_dummy_contacts()
     add_dummy_devices()
     add_dummy_notifications()
@@ -46,28 +44,6 @@ def add_dummy_users():
 
     db.session.add(user1)
     db.session.add(user2)
-    db.session.commit()
-
-
-def add_dummy_health_data():
-    health_data1 = HealthData(
-        user_id=1,  # Assuming user1 has ID 1
-        troponin_level=10,
-        heart_rate=70,
-        blood_pressure="120/80",
-        heart_status="good",
-    )
-
-    health_data2 = HealthData(
-        user_id=2,  # Assuming user2 has ID 2
-        troponin_level=15,
-        heart_rate=65,
-        blood_pressure="130/85",
-        heart_status="bad",
-    )
-
-    db.session.add(health_data1)
-    db.session.add(health_data2)
     db.session.commit()
 
 
@@ -118,21 +94,21 @@ def add_dummy_notifications():
         user_id=1,  # Assuming user1 has ID 1
         title="Good News!",
         message="Your recent health checkup results look great!",
-        type=NotificationType.GOOD,
+        type=HeartClassificationType.GOOD,
     )
 
     notification2 = Notification(
         user_id=1,  # Assuming user2 has ID 2
         title="Risk Alert",
         message="Please consult your doctor regarding your blood pressure.",
-        type=NotificationType.RISK,
+        type=HeartClassificationType.RISK,
     )
 
     notification3 = Notification(
         user_id=1,  # Assuming user2 has ID 2
         title="Danger Danger Zone",
         message="U are in danger my guy!!! Call the ambulance",
-        type=NotificationType.DANGER,
+        type=HeartClassificationType.DANGER,
     )
 
     db.session.add(notification1)

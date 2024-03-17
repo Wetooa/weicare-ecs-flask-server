@@ -1,7 +1,7 @@
 from app import db
-from flask import jsonify, request
+from flask import jsonify
 from flask import Blueprint
-from app.models import User, HealthData
+from app.models import HeartClassificationType, User, HealthData
 from random import randint
 
 health_data_bp = Blueprint("health_data", __name__)
@@ -39,7 +39,6 @@ def add_user_health_data(user_id):
     blood_pressure = f"{systolic}/{diastolic}"
 
     heart_status = "healthy"
-
     if troponin_level > 18:
         heart_status = "myocardial_infarction"
     elif systolic > 120 and diastolic < 80:
@@ -47,6 +46,12 @@ def add_user_health_data(user_id):
     elif heart_rate > 90:
         # TODO: change into smth that makes more sense
         heart_status = "arrhythmia"
+
+    classification = HeartClassificationType.GOOD
+    if heart_status == "elevated_bp" or heart_status == "arrhythmia":
+        classification = HeartClassificationType.RISK
+    if heart_status == "myocardial_infarction":
+        classification = HeartClassificationType.DANGER
 
     # TODO: do something here like maybe make model anaylze currently added data alongside previous data
     # TODO: contact people if heart status is bad
@@ -57,6 +62,7 @@ def add_user_health_data(user_id):
         heart_rate=heart_rate,
         blood_pressure=blood_pressure,
         heart_status=heart_status,
+        classification=classification,
     )
 
     db.session.add(new_health_data)

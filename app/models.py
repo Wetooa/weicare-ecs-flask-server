@@ -9,6 +9,12 @@ class SexType(enum.Enum):
     FEMALE = "female"
 
 
+class HeartClassificationType(enum.Enum):
+    GOOD = "good"
+    RISK = "risk"
+    DANGER = "danger"
+
+
 @dataclass
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +43,7 @@ class Contact(db.Model):
     age = db.Column(db.Integer)
     address = db.Column(db.String)
     number = db.Column(db.String)
+    relationship = db.Column(db.String)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     user = db.relationship("User", backref=db.backref("contacts", lazy=True))
@@ -74,17 +81,12 @@ class HealthData(db.Model):
     heart_rate = db.Column(db.Integer)
     blood_pressure = db.Column(db.String)
     heart_status = db.Column(db.String)
+    classification = db.Column(HeartClassificationType)
 
     created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, **kwargs):
         super(HealthData, self).__init__(**kwargs)
-
-
-class NotificationType(enum.Enum):
-    GOOD = "good"
-    RISK = "risk"
-    DANGER = "danger"
 
 
 @dataclass
@@ -96,7 +98,7 @@ class Notification(db.Model):
 
     title = db.Column(db.String)
     message = db.Column(db.String)
-    type = db.Column(db.Enum(NotificationType))
+    type = db.Column(db.Enum(HeartClassificationType))
     is_read = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.DateTime, default=datetime.now())
