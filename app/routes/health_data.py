@@ -182,7 +182,7 @@ def add_user_elevated_health_data(user_id):
 def add_user_non_elevated_health_data(user_id):
     user = User.query.get_or_404(user_id)
 
-    troponin_level = randint(0, 5)
+    troponin_level = randint(0, 18)
     heart_rate = randint(60, 100)
 
     systolic = randint(100, 140)
