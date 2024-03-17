@@ -26,17 +26,18 @@ def get_user_health_data(user_id):
     return jsonify(health_data_list)
 
 
-# fake pa muna, simply creates dummy data
+# FIX: fake pa muna, simply creates dummy data
 @health_data_bp.route("/health_data/<int:user_id>", methods=["POST"])
 def add_user_health_data(user_id):
     user = User.query.get_or_404(user_id)
-
-    # [troponin_level, heart_rate, blood_pressure] = request.get_json()
 
     troponin_level = randint(0, 20)
     heart_rate = randint(60, 100)
     blood_pressure = f"{randint(100, 130)}/{randint(60,100)}"
     heart_status = "good" if troponin_level < 15 else "bad"
+
+    # TODO: do something here like maybe make model anaylze currently added data alongside previous data
+    # TODO: contact people if heart status is bad
 
     new_health_data = HealthData(
         user_id=user.id,
@@ -46,9 +47,15 @@ def add_user_health_data(user_id):
         heart_status=heart_status,
     )
 
-    # do something here like maybe make model anaylze currently added data alongside previous data
-
     db.session.add(new_health_data)
     db.session.commit()
 
-    return jsonify({"message": "Health data added successfully"}), 201
+    return (
+        jsonify(
+            {
+                "message": "Health data added successfully",
+                "health_data": new_health_data,
+            }
+        ),
+        201,
+    )
