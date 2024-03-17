@@ -18,7 +18,7 @@ def get_user_devices(user_id):
             "user_id": user.id,
             "name": h.name,
             "is_active": h.is_active,
-            "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
+            "created_at": h.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
         }
         devices_list.append(devices_data)
 

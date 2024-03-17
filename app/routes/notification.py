@@ -17,9 +17,7 @@ def get_user_notifications(user_id):
             "message": notification.message,
             "type": notification.type.value,  # Convert enum to string value
             "is_read": notification.is_read,
-            "created_at": notification.created_at.strftime(
-                "%Y-%m-%d %H:%M:%S"
-            ),  # Format datetime
+            "created_at": notification.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
         }
         notifications_list.append(notification_data)
 

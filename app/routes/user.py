@@ -21,7 +21,7 @@ def get_all_users():
             "address": u.address,
             "weight": u.weight,
             "height": u.height,
-            "created_at": u.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
+            "created_at": u.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
         }
         users_list.append(user_data)
 
@@ -41,7 +41,7 @@ def get_user(user_id):
         "address": user.address,
         "weight": user.weight,
         "height": user.height,
-        "created_at": user.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
+        "created_at": user.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
     }
 
     return jsonify(user_data)

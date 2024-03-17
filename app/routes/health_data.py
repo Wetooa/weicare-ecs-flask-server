@@ -13,7 +13,7 @@ def get_recent_user_health_data(user_id):
     user = User.query.get_or_404(user_id)
     data = (
         HealthData.query.filter_by(user_id=user_id)
-        .order_by(HealthData.created_at.asc())
+        .order_by(HealthData.created_at.desc())
         .first()
     )
 
@@ -27,7 +27,7 @@ def get_recent_user_health_data(user_id):
         "blood_pressure": data.blood_pressure,
         "heart_status": data.heart_status,
         "classification": data.classification.value,
-        "created_at": data.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        "created_at": data.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
     }
 
     return jsonify(health_data)
@@ -36,7 +36,7 @@ def get_recent_user_health_data(user_id):
 @health_data_bp.route("/health_data/<int:user_id>", methods=["GET"])
 def get_user_health_data(user_id):
     data = HealthData.query.filter_by(user_id=user_id).order_by(
-        HealthData.created_at.asc()
+        HealthData.created_at.desc()
     )
     health_data_list = []
 
@@ -48,7 +48,7 @@ def get_user_health_data(user_id):
             "blood_pressure": h.blood_pressure,
             "heart_status": h.heart_status,
             "classification": h.classification.value,
-            "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": h.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f"),
         }
         health_data_list.append(health_data)
 
@@ -101,7 +101,7 @@ def add_user_health_data(user_id):
         "blood_pressure": new_health_data.blood_pressure,
         "heart_status": new_health_data.heart_status,
         "classification": new_health_data.classification.value,
-        "created_at": datetime.datetime.now(),
+        "created_at": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f"),
     }
 
     db.session.add(new_health_data)
