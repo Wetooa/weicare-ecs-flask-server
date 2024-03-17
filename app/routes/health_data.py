@@ -1,3 +1,4 @@
+import datetime
 from app import db
 from flask import jsonify
 from flask import Blueprint
@@ -19,7 +20,7 @@ def get_user_health_data(user_id):
             "heart_rate": h.heart_rate,
             "blood_pressure": h.blood_pressure,
             "heart_status": h.heart_status,
-            "classification": h.classification,
+            "classification": h.classification.value,
             "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
         }
         health_data_list.append(health_data)
@@ -72,8 +73,8 @@ def add_user_health_data(user_id):
         "heart_rate": new_health_data.heart_rate,
         "blood_pressure": new_health_data.blood_pressure,
         "heart_status": new_health_data.heart_status,
-        "classification": new_health_data.classification,
-        "created_at": new_health_data.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        "classification": new_health_data.classification.value,
+        "created_at": datetime.datetime.now(),
     }
 
     db.session.add(new_health_data)
