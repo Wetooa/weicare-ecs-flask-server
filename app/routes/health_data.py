@@ -13,7 +13,7 @@ def get_recent_user_health_data(user_id):
     user = User.query.get_or_404(user_id)
     data = (
         HealthData.query.filter_by(user_id=user_id)
-        .order_by(HealthData.created_at.desc())
+        .order_by(HealthData.created_at.asc())
         .first()
     )
 
@@ -36,7 +36,7 @@ def get_recent_user_health_data(user_id):
 @health_data_bp.route("/health_data/<int:user_id>", methods=["GET"])
 def get_user_health_data(user_id):
     data = HealthData.query.filter_by(user_id=user_id).order_by(
-        HealthData.created_at.desc()
+        HealthData.created_at.asc()
     )
     health_data_list = []
 
