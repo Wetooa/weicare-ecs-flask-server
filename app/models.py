@@ -81,7 +81,7 @@ class HealthData(db.Model):
     heart_rate = db.Column(db.Integer)
     blood_pressure = db.Column(db.String)
     heart_status = db.Column(db.String)
-    classification = db.Column(HeartClassificationType)
+    classification = db.Column(db.Enum(HeartClassificationType))
 
     created_at = db.Column(db.DateTime, default=datetime.now())
 
