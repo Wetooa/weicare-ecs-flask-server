@@ -122,7 +122,7 @@ def add_user_health_data(user_id):
 def add_user_elevated_health_data(user_id):
     user = User.query.get_or_404(user_id)
 
-    troponin_level = 30
+    troponin_level = randint(25, 30)
     heart_rate = randint(60, 100)
 
     systolic = randint(100, 140)
@@ -135,7 +135,66 @@ def add_user_elevated_health_data(user_id):
     elif systolic > 120 and diastolic < 80:
         heart_status = "elevated_bp"
     elif heart_rate > 90:
-        # TODO: change into smth that makes more sense
+        heart_status = "arrhythmia"
+
+    classification = HeartClassificationType.GOOD
+    if heart_status == "elevated_bp" or heart_status == "arrhythmia":
+        classification = HeartClassificationType.RISK
+    if heart_status == "myocardial_infarction":
+        classification = HeartClassificationType.DANGER
+
+    new_health_data = HealthData(
+        user_id=user.id,
+        troponin_level=troponin_level,
+        heart_rate=heart_rate,
+        blood_pressure=blood_pressure,
+        heart_status=heart_status,
+        classification=classification,
+    )
+
+    serializable_data = {
+        "user_id": user.id,
+        "troponin_level": new_health_data.troponin_level,
+        "heart_rate": new_health_data.heart_rate,
+        "blood_pressure": new_health_data.blood_pressure,
+        "heart_status": new_health_data.heart_status,
+        "classification": new_health_data.classification.value,
+        "created_at": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f"),
+    }
+
+    db.session.add(new_health_data)
+    db.session.commit()
+
+    return (
+        jsonify(
+            {
+                "message": "Health data added successfully",
+                "health_data": serializable_data,
+            }
+        ),
+        201,
+    )
+
+
+@health_data_bp.route(
+    "/health_data/<int:user_id>/non_elevated_troponin", methods=["POST"]
+)
+def add_user_non_elevated_health_data(user_id):
+    user = User.query.get_or_404(user_id)
+
+    troponin_level = randint(0, 5)
+    heart_rate = randint(60, 100)
+
+    systolic = randint(100, 140)
+    diastolic = randint(60, 100)
+    blood_pressure = f"{systolic}/{diastolic}"
+
+    heart_status = "healthy"
+    if troponin_level > 18:
+        heart_status = "myocardial_infarction"
+    elif systolic > 120 and diastolic < 80:
+        heart_status = "elevated_bp"
+    elif heart_rate > 90:
         heart_status = "arrhythmia"
 
     classification = HeartClassificationType.GOOD
