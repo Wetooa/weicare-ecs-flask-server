@@ -8,20 +8,47 @@ from random import randint
 health_data_bp = Blueprint("health_data", __name__)
 
 
+@health_data_bp.route("/health_data/<int:user_id>/recent", methods=["GET"])
+def get_recent_user_health_data(user_id):
+    user = User.query.get_or_404(user_id)
+    data = (
+        HealthData.query.filter_by(user_id=user_id)
+        .order_by(HealthData.created_at.desc())
+        .first()
+    )
+
+    if not data:
+        return jsonify({"message": "No data found..."})
+
+    health_data = {
+        "user_id": user.id,
+        "troponin_level": data.troponin_level,
+        "heart_rate": data.heart_rate,
+        "blood_pressure": data.blood_pressure,
+        "heart_status": data.heart_status,
+        "classification": data.classification.value,
+        "created_at": data.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+    return jsonify(health_data)
+
+
 @health_data_bp.route("/health_data/<int:user_id>", methods=["GET"])
 def get_user_health_data(user_id):
-    user = User.query.get_or_404(user_id)
+    data = HealthData.query.filter_by(user_id=user_id).order_by(
+        HealthData.created_at.desc()
+    )
     health_data_list = []
 
-    for h in user.health_data:
+    for h in data:
         health_data = {
-            "user_id": user.id,
+            "user_id": h.user_id,
             "troponin_level": h.troponin_level,
             "heart_rate": h.heart_rate,
             "blood_pressure": h.blood_pressure,
             "heart_status": h.heart_status,
             "classification": h.classification.value,
-            "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime
+            "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
         health_data_list.append(health_data)
 
